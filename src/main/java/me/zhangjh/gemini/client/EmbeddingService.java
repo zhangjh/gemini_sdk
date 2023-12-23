@@ -10,6 +10,10 @@ import me.zhangjh.gemini.response.EmbeddingResponse;
  */
 public interface EmbeddingService {
 
+    /**
+     * @param request
+     * @return EmbeddingResponse
+     * */
     EmbeddingResponse embedding(EmbeddingRequest request);
 
 }

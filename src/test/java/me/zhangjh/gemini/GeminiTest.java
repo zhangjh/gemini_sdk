@@ -2,10 +2,12 @@ package me.zhangjh.gemini;
 
 import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import me.zhangjh.gemini.client.EmbeddingService;
 import me.zhangjh.gemini.client.GeminiService;
 import me.zhangjh.gemini.common.RoleEnum;
 import me.zhangjh.gemini.pojo.*;
 import me.zhangjh.gemini.request.*;
+import me.zhangjh.gemini.response.EmbeddingResponse;
 import me.zhangjh.gemini.response.TextResponse;
 import me.zhangjh.gemini.response.VisionResponse;
 import org.junit.Test;
@@ -34,6 +36,9 @@ public class GeminiTest {
 
     @Autowired
     private GeminiService geminiService;
+
+    @Autowired
+    private EmbeddingService embeddingService;
 
     @Test
     public void textOnly() {
@@ -105,5 +110,18 @@ public class GeminiTest {
         contents.add(content);
         streamRequest.setContents(contents);
         geminiService.steamChat(streamRequest, null);
+    }
+
+    @Test
+    public void embeddingTest() {
+        EmbeddingRequest embeddingRequest = new EmbeddingRequest();
+        Content content = new Content();
+        List<Part> parts = new ArrayList<>();
+        TextPart textPart = new TextPart("Write long a story about a magic backpack.");
+        parts.add(textPart);
+        content.setParts(parts);
+        embeddingRequest.setContent(content);
+        EmbeddingResponse embedding = embeddingService.embedding(embeddingRequest);
+        log.info("embedding: {}", JSONObject.toJSONString(embedding));
     }
 }
