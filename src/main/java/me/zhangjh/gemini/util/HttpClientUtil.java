@@ -6,15 +6,12 @@ import me.zhangjh.gemini.request.HttpRequest;
 import okhttp3.*;
 import okio.BufferedSource;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.util.Assert;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -73,18 +70,20 @@ public class HttpClientUtil {
                     StandardCharsets.UTF_8)) {
                 try (BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
                     String line;
+                    List<String> responseContent = new ArrayList<>();
                     while ((line = bufferedReader.readLine()) != null) {
                         line = line.trim();
                         if(line.startsWith("\"text\":")) {
-                            String[] split = line.split(":");
-                            Assert.isTrue(split.length == 2, "response content invalid");
-                            String content = split[1];
+                            String[] parts = line.split(":");
+                            String content = String.join("", Arrays.copyOfRange(parts, 1, parts.length));
                             log.info("content: {}", content);
+                            responseContent.add(content);
                             if(cb != null) {
                                 cb.apply(content);
                             }
                         }
                     }
+                    log.info("response content: {}", String.join("\n", responseContent));
                 }
             }
         } catch (Exception e) {

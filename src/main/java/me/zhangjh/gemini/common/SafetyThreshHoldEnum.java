@@ -8,7 +8,7 @@ import lombok.Getter;
  * @Description
  */
 @Getter
-public enum SafetyEnum {
+public enum SafetyThreshHoldEnum {
 
     BLOCK_NONE("BLOCK_NONE", "始终显示（无论是否存在不安全内容的概率）"),
     BLOCK_ONLY_HIGH("BLOCK_ONLY_HIGH", "在存在高风险的不安全内容时屏蔽"),
@@ -20,7 +20,7 @@ public enum SafetyEnum {
     private final String code;
     private final String desc;
 
-    SafetyEnum(String code, String desc) {
+    SafetyThreshHoldEnum(String code, String desc) {
         this.code = code;
         this.desc = desc;
     }
