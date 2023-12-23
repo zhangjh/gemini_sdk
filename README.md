@@ -5,10 +5,11 @@
 
 Java已经这么没有排面了吗。。Gemini的API竟然没有Java的，我来封装一个吧。
 
-Note：
-国内需要科学上网工具，需美国IP
+注意：
+**访问gemini国内需要科学上网工具，需美国IP**
 
 使用方式：
+
 0. 需要将配置文件application.properties中API_KEY配置成你自己的
 1. 懒得上传maven中央仓库了，非常费劲
 2. 下载release目录下的gemini.sdk-1.0.jar，或者下载源码自行编译也行
