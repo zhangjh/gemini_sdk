@@ -2,19 +2,20 @@ package me.zhangjh.gemini.request;
 
 import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Data;
+import me.zhangjh.gemini.pojo.Content;
 
 import java.util.List;
 
 /**
  * @author njhxzhangjihong@126.com
- * @date 20:32 2023/12/22
+ * @date 21:21 2023/12/23
  * @Description
  */
 @Data
-public class MultiTurnRequest extends BaseRequest {
+public class StreamRequest extends BaseRequest {
 
-    private List<ChatContent> contents;
+    private List<Content> contents;
 
     @JSONField(serialize = false)
-    private String urlPath = "/models/gemini-pro:generateContent";
+    private String urlPath = "/models/gemini-pro:streamGenerateContent";
 }

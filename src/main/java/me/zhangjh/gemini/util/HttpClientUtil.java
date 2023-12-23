@@ -6,12 +6,17 @@ import me.zhangjh.gemini.request.HttpRequest;
 import okhttp3.*;
 import okio.BufferedSource;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.util.Assert;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /**
  * @author njhxzhangjihong@126.com
@@ -45,10 +50,44 @@ public class HttpClientUtil {
      * */
     public static String sendSync(HttpRequest httpRequest) {
         Request request = buildRequest(httpRequest);
-        log.info("sendSync request: {}", request);
+        log.info("sendSync request: {}", JSONObject.toJSONString(request));
         try (Response response = OK_HTTP_CLIENT.newCall(request).execute()){
             return handleResponse(Objects.requireNonNull(response.body()));
         } catch (IOException e) {
+            log.error("sendNormally exception, {}, httpRequest: {}, e: {}",
+                    e.getMessage(), JSONObject.toJSONString(httpRequest), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * stream request, need handle response in stream
+     * */
+    public static void sendStream(HttpRequest httpRequest, Function<String, Void> cb) {
+        Request request = buildRequest(httpRequest);
+        log.info("sendSync request: {}", JSONObject.toJSONString(request));
+        try (Response res = OK_HTTP_CLIENT.newCall(request).execute()) {
+            // handle response
+            assert res.body() != null;
+            try (InputStreamReader inputStreamReader = new InputStreamReader(res.body().byteStream(),
+                    StandardCharsets.UTF_8)) {
+                try (BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        line = line.trim();
+                        if(line.startsWith("\"text\":")) {
+                            String[] split = line.split(":");
+                            Assert.isTrue(split.length == 2, "response content invalid");
+                            String content = split[1];
+                            log.info("content: {}", content);
+                            if(cb != null) {
+                                cb.apply(content);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
             log.error("sendNormally exception, {}, httpRequest: {}, e: {}",
                     e.getMessage(), JSONObject.toJSONString(httpRequest), e);
             throw new RuntimeException(e);

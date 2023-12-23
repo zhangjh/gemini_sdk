@@ -1,14 +1,10 @@
 package me.zhangjh.gemini.service;
 
 import com.alibaba.fastjson2.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import me.zhangjh.gemini.client.GeminiService;
-import me.zhangjh.gemini.pojo.Content;
-import me.zhangjh.gemini.request.HttpRequest;
-import me.zhangjh.gemini.request.MixRequest;
-import me.zhangjh.gemini.request.MultiTurnRequest;
-import me.zhangjh.gemini.request.TextRequest;
-import me.zhangjh.gemini.response.MultiTurnResponse;
-import me.zhangjh.gemini.response.StreamResponse;
+import me.zhangjh.gemini.pojo.*;
+import me.zhangjh.gemini.request.*;
 import me.zhangjh.gemini.response.TextResponse;
 import me.zhangjh.gemini.response.VisionResponse;
 import me.zhangjh.gemini.util.HttpClientUtil;
@@ -18,13 +14,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * @author njhxzhangjihong@126.com
  * @date 21:08 2023/12/22
  * @Description
  */
+@Slf4j
 @Component
 public class GeminiServiceImpl implements GeminiService {
 
@@ -54,17 +53,66 @@ public class GeminiServiceImpl implements GeminiService {
                 urlBase + "/" + request.getVersion() + request.getUrlPath() + "?key=" + apiKey);
         httpRequest.setReqData(JSONObject.toJSONString(request));
         String res = HttpClientUtil.sendSync(httpRequest);
+        log.info("generateByMix: {}", res);
         Assert.isTrue(StringUtils.isNotEmpty(res), "empty res returned");
         return JSONObject.parseObject(res, VisionResponse.class);
     }
 
     @Override
-    public MultiTurnResponse multiTurnChat(MultiTurnRequest request) {
-        return null;
+    public TextResponse generateByText(String text) {
+        Assert.isTrue(StringUtils.isNotEmpty(text), "text input empty");
+        TextRequest textRequest = new TextRequest();
+        List<Content> contents = new ArrayList<>();
+        Content content = new Content();
+        List<Part> parts = new ArrayList<>();
+        TextPart textPart = new TextPart(text);
+        parts.add(textPart);
+        content.setParts(parts);
+        contents.add(content);
+        textRequest.setContents(contents);
+        return this.generateByText(textRequest);
     }
 
     @Override
-    public StreamResponse steamChat(TextRequest request) {
-        return null;
+    public VisionResponse generateByMix(String text, String image, String mimeType) {
+        Assert.isTrue(StringUtils.isNotEmpty(text), "text input empty");
+        Assert.isTrue(StringUtils.isNotEmpty(image), "image base64 content empty");
+        Assert.isTrue(StringUtils.isNotEmpty(mimeType), "image mimeType empty");
+        MixRequest mixRequest = new MixRequest();
+        List<Content> contents = new ArrayList<>();
+        Content content = new Content();
+        List<Part> parts = new ArrayList<>();
+        TextPart textPart = new TextPart(text);
+        parts.add(textPart);
+        ImagePart imagePart = new ImagePart();
+        InlineData inlineData = new InlineData(mimeType, image);
+        imagePart.setInlineData(inlineData);
+        parts.add(imagePart);
+        content.setParts(parts);
+        contents.add(content);
+        mixRequest.setContents(contents);
+        return this.generateByMix(mixRequest);
+    }
+
+    @Override
+    public TextResponse multiTurnChat(MultiTurnRequest request) {
+        List<ChatContent> contents = request.getContents();
+        Assert.isTrue(CollectionUtils.isNotEmpty(contents), "request empty");
+        HttpRequest httpRequest = new HttpRequest(urlBase + "/" + request.getVersion()
+                + request.getUrlPath() + "?key=" + apiKey);
+        httpRequest.setReqData(JSONObject.toJSONString(request));
+        String res = HttpClientUtil.sendSync(httpRequest);
+        Assert.isTrue(StringUtils.isNotEmpty(res), "empty res returned");
+        return JSONObject.parseObject(res, TextResponse.class);
+    }
+
+    @Override
+    public void steamChat(StreamRequest request, Function<String, Void> cb) {
+        List<Content> contents = request.getContents();
+        Assert.isTrue(CollectionUtils.isNotEmpty(contents), "contents empty");
+        HttpRequest httpRequest = new HttpRequest(urlBase + "/" + request.getVersion()
+                + request.getUrlPath() + "?key=" + apiKey);
+        httpRequest.setReqData(JSONObject.toJSONString(request));
+        HttpClientUtil.sendStream(httpRequest, cb);
     }
 }
