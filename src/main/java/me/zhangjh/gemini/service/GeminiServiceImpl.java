@@ -3,6 +3,7 @@ package me.zhangjh.gemini.service;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import me.zhangjh.gemini.client.GeminiService;
+import me.zhangjh.gemini.common.MimeTypeEnum;
 import me.zhangjh.gemini.pojo.*;
 import me.zhangjh.gemini.request.*;
 import me.zhangjh.gemini.response.TextResponse;
@@ -49,6 +50,14 @@ public class GeminiServiceImpl implements GeminiService {
     public VisionResponse generateByMix(MixRequest request) {
         List<Content> contents = request.getContents();
         Assert.isTrue(CollectionUtils.isNotEmpty(contents), "Empty contents");
+        // mime check
+        for (Content content : contents) {
+            for (Part part : content.getParts()) {
+                if(part instanceof ImagePart imagePart) {
+                    MimeTypeEnum.getByCode(imagePart.getInlineData().getMimeType());
+                }
+            }
+        }
         HttpRequest httpRequest = new HttpRequest(
                 urlBase + "/" + request.getVersion() + request.getUrlPath() + "?key=" + apiKey);
         httpRequest.setReqData(JSONObject.toJSONString(request));
@@ -78,6 +87,7 @@ public class GeminiServiceImpl implements GeminiService {
         Assert.isTrue(StringUtils.isNotEmpty(text), "text input empty");
         Assert.isTrue(StringUtils.isNotEmpty(image), "image base64 content empty");
         Assert.isTrue(StringUtils.isNotEmpty(mimeType), "image mimeType empty");
+        MimeTypeEnum.getByCode(mimeType);
         MixRequest mixRequest = new MixRequest();
         List<Content> contents = new ArrayList<>();
         Content content = new Content();

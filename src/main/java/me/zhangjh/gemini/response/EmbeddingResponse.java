@@ -2,7 +2,6 @@ package me.zhangjh.gemini.response;
 
 import lombok.Data;
 import me.zhangjh.gemini.pojo.Embedding;
-import me.zhangjh.gemini.request.EmbeddingRequest;
 
 /**
  * @author njhxzhangjihong@126.com

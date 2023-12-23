@@ -41,7 +41,7 @@ public interface GeminiService {
      * simplify interface of generateByMix
      * @param text
      * @param image format base64 of image
-     * @param mimeType such as image/png
+     * @param mimeType such as image/png, @link me.zhangjh.gemini.common.MimeTypeEnum
      * @return VisionResponse
      * */
     VisionResponse generateByMix(String text, String image, String mimeType);
