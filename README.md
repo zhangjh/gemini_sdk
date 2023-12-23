@@ -9,6 +9,7 @@ Note：
 国内需要科学上网工具，需美国IP
 
 使用方式：
+0. 需要将配置文件application.properties中API_KEY配置成你自己的
 1. 懒得上传maven中央仓库了，非常费劲
 2. 下载release目录下的gemini.sdk-1.0.jar，或者下载源码自行编译也行
 3. jar包的三元组坐标，以maven为例：
@@ -19,29 +20,31 @@ Note：
    ```
 4. 使用方式
 
-   1）问答类的接口
-    ```java
+   - 问答类的接口
+   ```java
     @Autowired
     private GeminiService geminiService;
-    ```
-   2）向量嵌入接口
+   ```
+   
+   - 向量嵌入接口
    ```java
     @Autowired
     private EmbeddingService embeddingService;
    ```
-   3) 简单文本生成接口
+   
+   - 简单文本生成接口
    ```java
    TextResponse generateByText(String text);
    ```
-   5) 简单多模态接口
+   - 简单多模态接口
    ```java
    VisionResponse generateByMix(String text, String image, String mimeType);
    ```
-   6) 多轮对话接口（gemini仅支持文本）
+   - 多轮对话接口（gemini仅支持文本）
    ```java
     TextResponse multiTurnChat(MultiTurnRequest request);
    ```
-   7) 流式接口
+   - 流式接口
    ```java
     void steamChat(StreamRequest request, Function<String, Void> cb);
    ```
