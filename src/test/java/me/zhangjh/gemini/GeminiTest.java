@@ -100,10 +100,10 @@ public class GeminiTest {
 
     @Test
     public void streamChat() {
-        StreamRequest streamRequest = new StreamRequest();
-        List<Content> contents = new ArrayList<>();
-        Content content = new Content();
-        List<Part> parts = new ArrayList<>();
+        StreamRequest<ChatContent> streamRequest = new StreamRequest<>();
+        List<ChatContent> contents = new ArrayList<>();
+        ChatContent content = new ChatContent();
+        List<TextPart> parts = new ArrayList<>();
         TextPart textPart = new TextPart("Write long a story about a magic backpack.");
         parts.add(textPart);
         content.setParts(parts);

@@ -140,8 +140,8 @@ public class GeminiServiceImpl implements GeminiService {
     }
 
     @Override
-    public void streamChat(StreamRequest request, Function<String, Void> cb) {
-        List<Content> contents = request.getContents();
+    public void streamChat(StreamRequest<ChatContent> request, Function<String, Void> cb) {
+        List<ChatContent> contents = request.getContents();
         Assert.isTrue(CollectionUtils.isNotEmpty(contents), "contents empty");
         HttpRequest httpRequest = new HttpRequest(urlBase + "/" + request.getVersion()
                 + request.getUrlPath() + "?key=" + apiKey);
@@ -150,13 +150,13 @@ public class GeminiServiceImpl implements GeminiService {
     }
 
     @Override
-    public void StreamChat(String question, Function<String, Void> cb) {
+    public void StreamChat(String question, List<ChatContent> context, Function<String, Void> cb) {
         Assert.isTrue(StringUtils.isNotEmpty(question), "question empty");
-        StreamRequest streamRequest = new StreamRequest();
-        List<Content> contents = new ArrayList<>();
-        Content content = new Content();
-        content.setParts(List.of(new TextPart(question)));
-        contents.add(content);
+        StreamRequest<ChatContent> streamRequest = new StreamRequest<>();
+        List<ChatContent> contents = new ArrayList<>(context);
+        ChatContent chatContent = new ChatContent();
+        chatContent.setRole(RoleEnum.user.name());
+        chatContent.setParts(List.of(new TextPart(question)));
         streamRequest.setContents(contents);
         this.streamChat(streamRequest, cb);
     }

@@ -67,12 +67,12 @@ public interface GeminiService {
      * @param cb callback function which receives a string per stream
      * no response returned, stream response data should be handled by HttpServletResponse
      * */
-    void streamChat(StreamRequest request, Function<String, Void> cb);
+    void streamChat(StreamRequest<ChatContent> request, Function<String, Void> cb);
 
     /**
      * simplify interface of streamChat
      * @param question
      * @param cb
      * */
-    void StreamChat(String question, Function<String, Void> cb);
+    void StreamChat(String question, List<ChatContent> context, Function<String, Void> cb);
 }
