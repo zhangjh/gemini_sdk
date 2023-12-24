@@ -76,6 +76,8 @@ public class HttpClientUtil {
                         if(line.startsWith("\"text\":")) {
                             String[] parts = line.split(":");
                             String content = String.join("", Arrays.copyOfRange(parts, 1, parts.length));
+                            content = content.replaceAll("^\s?\"", "")
+                                        .replaceAll("\s?\"$", "");
                             log.info("content: {}", content);
                             responseContent.add(content);
                             if(cb != null) {
