@@ -157,6 +157,7 @@ public class GeminiServiceImpl implements GeminiService {
         ChatContent chatContent = new ChatContent();
         chatContent.setRole(RoleEnum.user.name());
         chatContent.setParts(List.of(new TextPart(question)));
+        contents.add(chatContent);
         streamRequest.setContents(contents);
         this.streamChat(streamRequest, cb);
     }
