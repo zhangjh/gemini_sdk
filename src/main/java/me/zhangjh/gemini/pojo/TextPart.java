@@ -12,6 +12,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class TextPart extends Part {
 
-    private String text;
-
+    public TextPart(String text) {
+        super(text);
+    }
 }
