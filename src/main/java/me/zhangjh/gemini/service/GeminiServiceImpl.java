@@ -118,7 +118,7 @@ public class GeminiServiceImpl implements GeminiService {
     }
 
     @Override
-    public TextResponse multiTurnChat(String question, List<ChatContent> context) {
+    public String multiTurnChat(String question, List<ChatContent> context) {
         MultiTurnRequest multiTurnRequest = new MultiTurnRequest();
         List<ChatContent> contents = new ArrayList<>(context);
         ChatContent chatContent = new ChatContent();
@@ -126,7 +126,17 @@ public class GeminiServiceImpl implements GeminiService {
         chatContent.setParts(List.of(new TextPart(question)));
         contents.add(chatContent);
         multiTurnRequest.setContents(contents);
-        return this.multiTurnChat(multiTurnRequest);
+        TextResponse textResponse = this.multiTurnChat(multiTurnRequest);
+        if (CollectionUtils.isEmpty(textResponse.getCandidates())) {
+            return null;
+        }
+        List<String> res = new ArrayList<>();
+        for (Candidate candidate : textResponse.getCandidates()) {
+            for (Part part : candidate.getContent().getParts()) {
+                res.add(part.getText());
+            }
+        }
+        return String.join("", res);
     }
 
     @Override

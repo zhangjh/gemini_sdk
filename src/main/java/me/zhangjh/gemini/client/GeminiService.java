@@ -57,7 +57,7 @@ public interface GeminiService {
      * @param question
      * @param context
      * */
-    TextResponse multiTurnChat(String question, List<ChatContent> context);
+    String multiTurnChat(String question, List<ChatContent> context);
 
     /**
      * Gemini returns a response after completing the entire generation process as default.
