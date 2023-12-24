@@ -109,7 +109,7 @@ public class GeminiTest {
         content.setParts(parts);
         contents.add(content);
         streamRequest.setContents(contents);
-        geminiService.steamChat(streamRequest, null);
+        geminiService.streamChat(streamRequest, null);
     }
 
     @Test

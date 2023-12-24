@@ -1,12 +1,10 @@
 package me.zhangjh.gemini.client;
 
-import me.zhangjh.gemini.request.MixRequest;
-import me.zhangjh.gemini.request.MultiTurnRequest;
-import me.zhangjh.gemini.request.StreamRequest;
-import me.zhangjh.gemini.request.TextRequest;
+import me.zhangjh.gemini.request.*;
 import me.zhangjh.gemini.response.TextResponse;
 import me.zhangjh.gemini.response.VisionResponse;
 
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -55,6 +53,13 @@ public interface GeminiService {
     TextResponse multiTurnChat(MultiTurnRequest request);
 
     /**
+     * simplify interface of multiTurnChat
+     * @param question
+     * @param context
+     * */
+    TextResponse multiTurnChat(String question, List<ChatContent> context);
+
+    /**
      * Gemini returns a response after completing the entire generation process as default.
      * You can achieve faster interactions by not waiting for the entire result,
      * and instead use streaming to handle partial results.
@@ -62,6 +67,12 @@ public interface GeminiService {
      * @param cb callback function which receives a string per stream
      * no response returned, stream response data should be handled by HttpServletResponse
      * */
-    void steamChat(StreamRequest request, Function<String, Void> cb);
+    void streamChat(StreamRequest request, Function<String, Void> cb);
 
+    /**
+     * simplify interface of streamChat
+     * @param question
+     * @param cb
+     * */
+    void StreamChat(String question, Function<String, Void> cb);
 }

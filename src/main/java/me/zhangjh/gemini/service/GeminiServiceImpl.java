@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import me.zhangjh.gemini.client.GeminiService;
 import me.zhangjh.gemini.common.MimeTypeEnum;
+import me.zhangjh.gemini.common.RoleEnum;
 import me.zhangjh.gemini.pojo.*;
 import me.zhangjh.gemini.request.*;
 import me.zhangjh.gemini.response.TextResponse;
@@ -117,12 +118,36 @@ public class GeminiServiceImpl implements GeminiService {
     }
 
     @Override
-    public void steamChat(StreamRequest request, Function<String, Void> cb) {
+    public TextResponse multiTurnChat(String question, List<ChatContent> context) {
+        MultiTurnRequest multiTurnRequest = new MultiTurnRequest();
+        List<ChatContent> contents = new ArrayList<>(context);
+        ChatContent chatContent = new ChatContent();
+        chatContent.setRole(RoleEnum.user.name());
+        chatContent.setParts(List.of(new TextPart(question)));
+        contents.add(chatContent);
+        multiTurnRequest.setContents(contents);
+        return this.multiTurnChat(multiTurnRequest);
+    }
+
+    @Override
+    public void streamChat(StreamRequest request, Function<String, Void> cb) {
         List<Content> contents = request.getContents();
         Assert.isTrue(CollectionUtils.isNotEmpty(contents), "contents empty");
         HttpRequest httpRequest = new HttpRequest(urlBase + "/" + request.getVersion()
                 + request.getUrlPath() + "?key=" + apiKey);
         httpRequest.setReqData(JSONObject.toJSONString(request));
         HttpClientUtil.sendStream(httpRequest, cb);
+    }
+
+    @Override
+    public void StreamChat(String question, Function<String, Void> cb) {
+        Assert.isTrue(StringUtils.isNotEmpty(question), "question empty");
+        StreamRequest streamRequest = new StreamRequest();
+        List<Content> contents = new ArrayList<>();
+        Content content = new Content();
+        content.setParts(List.of(new TextPart(question)));
+        contents.add(content);
+        streamRequest.setContents(contents);
+        this.streamChat(streamRequest, cb);
     }
 }
