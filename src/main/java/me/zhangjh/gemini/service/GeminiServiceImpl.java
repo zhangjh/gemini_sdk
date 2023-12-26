@@ -120,7 +120,10 @@ public class GeminiServiceImpl implements GeminiService {
     @Override
     public String multiTurnChat(String question, List<ChatContent> context) {
         MultiTurnRequest multiTurnRequest = new MultiTurnRequest();
-        List<ChatContent> contents = new ArrayList<>(context);
+        List<ChatContent> contents = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(context)) {
+            contents.addAll(context);
+        }
         ChatContent chatContent = new ChatContent();
         chatContent.setRole(RoleEnum.user.name());
         chatContent.setParts(List.of(new TextPart(question)));
@@ -153,8 +156,11 @@ public class GeminiServiceImpl implements GeminiService {
     public void StreamChat(String question, List<ChatContent> context, Function<String, Void> cb) {
         Assert.isTrue(StringUtils.isNotEmpty(question), "question empty");
         StreamRequest<ChatContent> streamRequest = new StreamRequest<>();
-        List<ChatContent> contents = new ArrayList<>(context);
         ChatContent chatContent = new ChatContent();
+        List<ChatContent> contents = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(context)) {
+            contents.addAll(context);
+        }
         chatContent.setRole(RoleEnum.user.name());
         chatContent.setParts(List.of(new TextPart(question)));
         contents.add(chatContent);
