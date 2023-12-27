@@ -74,5 +74,5 @@ public interface GeminiService {
      * @param question
      * @param cb
      * */
-    void StreamChat(String question, List<ChatContent> context, Function<String, Void> cb);
+    void streamChat(String question, List<ChatContent> context, Function<String, Void> cb);
 }

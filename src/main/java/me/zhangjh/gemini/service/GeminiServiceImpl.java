@@ -153,7 +153,7 @@ public class GeminiServiceImpl implements GeminiService {
     }
 
     @Override
-    public void StreamChat(String question, List<ChatContent> context, Function<String, Void> cb) {
+    public void streamChat(String question, List<ChatContent> context, Function<String, Void> cb) {
         Assert.isTrue(StringUtils.isNotEmpty(question), "question empty");
         StreamRequest<ChatContent> streamRequest = new StreamRequest<>();
         ChatContent chatContent = new ChatContent();
