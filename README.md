@@ -45,9 +45,17 @@ Java已经这么没有排面了吗。。Gemini的API竟然没有Java的，我来
    ```java
     TextResponse multiTurnChat(MultiTurnRequest request);
    ```
+   - 简单多轮对话接口
+   ```java
+   String multiTurnChat(String question, List<ChatContent> context);
+   ```
    - 流式接口
    ```java
     void steamChat(StreamRequest request, Function<String, Void> cb);
+   ```
+   - 简单流式接口
+   ```java
+   void streamChat(String question, List<ChatContent> context, Function<String, Void> cb);
    ```
    流式接口需要传入一个回调函数，回调函数接收一个字符串参数，表示gemini返回的文本。
 5. 其他接口不多说了，有需要的可以自行查看源码。
