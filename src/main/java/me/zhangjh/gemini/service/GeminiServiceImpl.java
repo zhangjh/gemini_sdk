@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -56,8 +57,8 @@ public class GeminiServiceImpl implements GeminiService {
         // mime check
         for (Content content : contents) {
             for (Part part : content.getParts()) {
-                if(part instanceof ImagePart imagePart) {
-                    MimeTypeEnum.getByCode(imagePart.getInlineData().getMimeType());
+                if(part instanceof ImagePart) {
+                    MimeTypeEnum.getByCode(((ImagePart)part).getInlineData().getMimeType());
                 }
             }
         }
@@ -124,7 +125,7 @@ public class GeminiServiceImpl implements GeminiService {
         }
         ChatContent chatContent = new ChatContent();
         chatContent.setRole(RoleEnum.user.name());
-        chatContent.setParts(List.of(new TextPart(question)));
+        chatContent.setParts(Collections.singletonList(new TextPart(question)));
         contents.add(chatContent);
         multiTurnRequest.setContents(contents);
         TextResponse textResponse = this.multiTurnChat(multiTurnRequest);
@@ -160,7 +161,7 @@ public class GeminiServiceImpl implements GeminiService {
             contents.addAll(context);
         }
         chatContent.setRole(RoleEnum.user.name());
-        chatContent.setParts(List.of(new TextPart(question)));
+        chatContent.setParts(Collections.singletonList(new TextPart(question)));
         contents.add(chatContent);
         streamRequest.setContents(contents);
         this.streamChat(streamRequest, cb);

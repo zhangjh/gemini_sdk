@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import me.zhangjh.gemini.common.ApiVersionEnum;
 import me.zhangjh.gemini.pojo.Content;
 
 /**
@@ -14,7 +15,10 @@ import me.zhangjh.gemini.pojo.Content;
 @ToString(callSuper = true)
 @Getter
 @Setter
-public class EmbeddingRequest extends BaseRequest{
+public class EmbeddingRequest {
+
+    @JSONField(serialize = false)
+    private String version = ApiVersionEnum.V1.getCode();
 
     private Content content;
 
