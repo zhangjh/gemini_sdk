@@ -8,9 +8,8 @@ Java已经这么没有排面了吗。。Gemini的API竟然没有Java的，我来
 注意：
 **访问gemini国内需要科学上网工具，需美国IP**
 
-使用方式：
+使用方式： (**支持JDK8以上环境**)
 
--1. 支持JDK8以上环境
 0. 需要将配置文件application.properties中API_KEY配置成你自己的，你需要在你的工程下覆盖配置如下：
    ```text
     # replace it as yours
