@@ -1,7 +1,9 @@
 package me.zhangjh.gemini.request;
 
 import com.alibaba.fastjson2.annotation.JSONField;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import me.zhangjh.gemini.pojo.Content;
 
 import java.util.List;
@@ -11,7 +13,9 @@ import java.util.List;
  * @date 20:31 2023/12/22
  * @Description
  */
-@Data
+@ToString(callSuper = true)
+@Getter
+@Setter
 public class MixRequest extends BaseRequest {
 
     private List<Content> contents;

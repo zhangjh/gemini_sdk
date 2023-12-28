@@ -1,7 +1,6 @@
-package me.zhangjh.gemini.request;
+package me.zhangjh.gemini.pojo;
 
 import lombok.Data;
-import me.zhangjh.gemini.pojo.TextPart;
 
 import java.util.List;
 

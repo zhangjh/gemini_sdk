@@ -1,5 +1,6 @@
 package me.zhangjh.gemini.client;
 
+import me.zhangjh.gemini.pojo.ChatContent;
 import me.zhangjh.gemini.request.*;
 import me.zhangjh.gemini.response.TextResponse;
 import me.zhangjh.gemini.response.VisionResponse;

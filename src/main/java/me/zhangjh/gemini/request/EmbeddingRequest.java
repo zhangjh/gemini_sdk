@@ -1,7 +1,9 @@
 package me.zhangjh.gemini.request;
 
 import com.alibaba.fastjson2.annotation.JSONField;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import me.zhangjh.gemini.pojo.Content;
 
 /**
@@ -9,7 +11,9 @@ import me.zhangjh.gemini.pojo.Content;
  * @date 20:35 2023/12/22
  * @Description
  */
-@Data
+@ToString(callSuper = true)
+@Getter
+@Setter
 public class EmbeddingRequest extends BaseRequest{
 
     private Content content;

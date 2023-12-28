@@ -41,7 +41,9 @@ public class GeminiServiceImpl implements GeminiService {
         Assert.isTrue(CollectionUtils.isNotEmpty(contents), "Empty contents");
         HttpRequest httpRequest = new HttpRequest(
                 urlBase + "/" + request.getVersion() + request.getUrlPath() + "?key=" + apiKey);
-        httpRequest.setReqData(JSONObject.toJSONString(request));
+        String reqData = JSONObject.toJSONString(request);
+        log.info("generateByText request: {}", reqData);
+        httpRequest.setReqData(reqData);
         String res = HttpClientUtil.sendSync(httpRequest);
         Assert.isTrue(StringUtils.isNotEmpty(res), "empty res returned");
         return JSONObject.parseObject(res, TextResponse.class);

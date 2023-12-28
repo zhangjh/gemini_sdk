@@ -1,7 +1,9 @@
 package me.zhangjh.gemini.request;
 
 import com.alibaba.fastjson2.annotation.JSONField;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -10,7 +12,9 @@ import java.util.List;
  * @date 21:21 2023/12/23
  * @Description
  */
-@Data
+@ToString(callSuper = true)
+@Getter
+@Setter
 public class StreamRequest<T> extends BaseRequest {
 
     /**

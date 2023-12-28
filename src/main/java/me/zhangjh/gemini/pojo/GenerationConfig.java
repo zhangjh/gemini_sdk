@@ -16,7 +16,7 @@ public class GenerationConfig {
 
     private double temperature = 1.0;
 
-    private int maxOutputTokens = 800;
+    private int maxOutputTokens = 2048;
 
     private double topP = 0.8;
 

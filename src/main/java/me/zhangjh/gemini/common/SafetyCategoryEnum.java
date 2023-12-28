@@ -22,9 +22,9 @@ public enum SafetyCategoryEnum {
     HARM_CATEGORY_DANGEROUS_CONTENT("HARM_CATEGORY_DANGEROUS_CONTENT", "危险内容")
     ;
 
-    private String code;
+    private final String code;
 
-    private String desc;
+    private final String desc;
 
     SafetyCategoryEnum(String code, String desc) {
         this.code = code;
