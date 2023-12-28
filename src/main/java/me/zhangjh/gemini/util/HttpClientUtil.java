@@ -28,12 +28,12 @@ public class HttpClientUtil {
 
     static {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.readTimeout(60, TimeUnit.MINUTES);
-        builder.callTimeout(60, TimeUnit.MINUTES);
-        builder.connectTimeout(60, TimeUnit.MINUTES);
-        builder.writeTimeout(60, TimeUnit.MINUTES);
+        builder.readTimeout(60, TimeUnit.SECONDS);
+        builder.callTimeout(60, TimeUnit.SECONDS);
+        builder.connectTimeout(60, TimeUnit.SECONDS);
+        builder.writeTimeout(60, TimeUnit.SECONDS);
         builder.connectionPool(new ConnectionPool(32,
-                5,TimeUnit.MINUTES));
+                60,TimeUnit.SECONDS));
         OK_HTTP_CLIENT = builder.build();
     }
 
