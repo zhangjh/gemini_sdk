@@ -68,8 +68,6 @@ public class BaseRequest {
                     SafetyThreshHoldEnum.BLOCK_NONE.getCode()));
             safetySettings.add(new SafetySetting(SafetyCategoryEnum.HARM_CATEGORY_DANGEROUS_CONTENT.getCode(),
                     SafetyThreshHoldEnum.BLOCK_NONE.getCode()));
-            safetySettings.add(new SafetySetting(SafetyCategoryEnum.HARM_CATEGORY_UNSPECIFIED.getCode(),
-                    SafetyThreshHoldEnum.BLOCK_NONE.getCode()));
             this.safetySettings = safetySettings;
         }
     }
