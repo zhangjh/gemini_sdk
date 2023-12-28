@@ -11,6 +11,7 @@ import me.zhangjh.gemini.response.EmbeddingResponse;
 public interface EmbeddingService {
 
     /**
+     * embedding content
      * @param request
      * @return EmbeddingResponse
      * */

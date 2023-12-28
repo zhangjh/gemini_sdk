@@ -16,4 +16,20 @@ public class ChatContent {
     private String role;
 
     private List<TextPart> parts;
+
+    /**
+     * non multiTurnChat chat doesn't need role
+     * */
+    public static ChatContent buildBySingleText(String text) {
+        ChatContent content = new ChatContent();
+        content.setParts(List.of(new TextPart(text)));
+        return content;
+    }
+
+    public static ChatContent buildBySingleText(String text, String role) {
+        ChatContent content = new ChatContent();
+        content.setRole(role);
+        content.setParts(List.of(new TextPart(text)));
+        return content;
+    }
 }

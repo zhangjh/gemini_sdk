@@ -37,7 +37,7 @@ public class GeminiServiceImpl implements GeminiService {
 
     @Override
     public TextResponse generateByText(TextRequest request) {
-        List<Content> contents = request.getContents();
+        List<ChatContent> contents = request.getContents();
         Assert.isTrue(CollectionUtils.isNotEmpty(contents), "Empty contents");
         HttpRequest httpRequest = new HttpRequest(
                 urlBase + "/" + request.getVersion() + request.getUrlPath() + "?key=" + apiKey);
@@ -72,12 +72,8 @@ public class GeminiServiceImpl implements GeminiService {
     public TextResponse generateByText(String text) {
         Assert.isTrue(StringUtils.isNotEmpty(text), "text input empty");
         TextRequest textRequest = new TextRequest();
-        List<Content> contents = new ArrayList<>();
-        Content content = new Content();
-        List<Part> parts = new ArrayList<>();
-        TextPart textPart = new TextPart(text);
-        parts.add(textPart);
-        content.setParts(parts);
+        List<ChatContent> contents = new ArrayList<>();
+        ChatContent content = ChatContent.buildBySingleText(text);
         contents.add(content);
         textRequest.setContents(contents);
         return this.generateByText(textRequest);

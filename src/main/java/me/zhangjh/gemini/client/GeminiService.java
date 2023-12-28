@@ -56,6 +56,7 @@ public interface GeminiService {
      * simplify interface of multiTurnChat
      * @param question
      * @param context
+     * @return String
      * */
     String multiTurnChat(String question, List<ChatContent> context);
 
@@ -72,6 +73,7 @@ public interface GeminiService {
     /**
      * simplify interface of streamChat
      * @param question
+     * @param context
      * @param cb
      * */
     void streamChat(String question, List<ChatContent> context, Function<String, Void> cb);

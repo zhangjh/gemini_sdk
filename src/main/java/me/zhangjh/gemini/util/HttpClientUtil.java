@@ -47,7 +47,6 @@ public class HttpClientUtil {
      * */
     public static String sendSync(HttpRequest httpRequest) {
         Request request = buildRequest(httpRequest);
-        log.info("sendSync request: {}", JSONObject.toJSONString(request));
         try (Response response = OK_HTTP_CLIENT.newCall(request).execute()){
             return handleResponse(Objects.requireNonNull(response.body()));
         } catch (IOException e) {
@@ -62,7 +61,6 @@ public class HttpClientUtil {
      * */
     public static void sendStream(HttpRequest httpRequest, Function<String, Void> cb) {
         Request request = buildRequest(httpRequest);
-        log.info("sendSync request: {}", JSONObject.toJSONString(request));
         try (Response res = OK_HTTP_CLIENT.newCall(request).execute()) {
             // handle response
             assert res.body() != null;

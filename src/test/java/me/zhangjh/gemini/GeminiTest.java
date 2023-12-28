@@ -43,13 +43,9 @@ public class GeminiTest {
     @Test
     public void textOnly() {
         TextRequest textRequest = new TextRequest();
-        List<Content> contents = new ArrayList<>();
-        Content content = new Content();
-        List<Part> parts = new ArrayList<>();
-        TextPart textPart = new TextPart("你好");
-        parts.add(textPart);
-        content.setParts(parts);
-        contents.add(content);
+        List<ChatContent> contents = new ArrayList<>();
+        ChatContent chatContent = ChatContent.buildBySingleText("你好");
+        contents.add(chatContent);
         textRequest.setContents(contents);
         TextResponse textResponse = geminiService.generateByText(textRequest);
         log.info("textResponse: {}", JSONObject.toJSONString(textResponse));
@@ -81,17 +77,13 @@ public class GeminiTest {
     public void multiTurnChat() {
         MultiTurnRequest multiTurnRequest = new MultiTurnRequest();
         List<ChatContent> contents = new ArrayList<>();
-        ChatContent content = new ChatContent();
-        content.setRole(RoleEnum.user.name());
-        content.setParts(List.of(new TextPart("Write the first line of a story about a magic backpack.")));
+        ChatContent content = ChatContent.buildBySingleText("Write the first line of a story about a magic backpack.", RoleEnum.user.name());
         contents.add(content);
-        ChatContent content1 = new ChatContent();
-        content1.setRole(RoleEnum.model.name());
-        content1.setParts(List.of(new TextPart("In the bustling city of Meadow brook, lived a young girl named Sophie. She was a bright and curious soul with an imaginative mind.")));
+        ChatContent content1 = ChatContent.buildBySingleText("In the bustling city of Meadow brook, lived a young " +
+                "girl named Sophie. She was a bright and curious soul with an imaginative mind.",
+                RoleEnum.model.name());
         contents.add(content1);
-        ChatContent question = new ChatContent();
-        question.setRole(RoleEnum.user.name());
-        question.setParts(List.of(new TextPart("Can you set it in a quiet village in 1600s France?")));
+        ChatContent question = ChatContent.buildBySingleText("Can you set it in a quiet village in 1600s France?", RoleEnum.user.name());
         contents.add(question);
         multiTurnRequest.setContents(contents);
         TextResponse multiTurnResponse = geminiService.multiTurnChat(multiTurnRequest);
@@ -102,11 +94,7 @@ public class GeminiTest {
     public void streamChat() {
         StreamRequest<ChatContent> streamRequest = new StreamRequest<>();
         List<ChatContent> contents = new ArrayList<>();
-        ChatContent content = new ChatContent();
-        List<TextPart> parts = new ArrayList<>();
-        TextPart textPart = new TextPart("Write long a story about a magic backpack.");
-        parts.add(textPart);
-        content.setParts(parts);
+        ChatContent content = ChatContent.buildBySingleText("Write long a story about a magic backpack.");
         contents.add(content);
         streamRequest.setContents(contents);
         geminiService.streamChat(streamRequest, null);

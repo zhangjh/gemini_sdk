@@ -2,7 +2,6 @@ package me.zhangjh.gemini.request;
 
 import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Data;
-import me.zhangjh.gemini.pojo.Content;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
 @Data
 public class TextRequest extends BaseRequest {
 
-    private List<Content> contents;
+    private List<ChatContent> contents;
 
     @JSONField(serialize = false)
     private String urlPath = "/models/gemini-pro:generateContent";
