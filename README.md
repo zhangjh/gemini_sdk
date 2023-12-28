@@ -26,7 +26,7 @@ Java已经这么没有排面了吗。。Gemini的API竟然没有Java的，我来
         <version>1.0</version>
     </dependency>
    ```
-   最新版本号可以去[中央仓库]()查找。
+   最新版本号可以去[中央仓库](https://central.sonatype.com/artifact/me.zhangjh/gemini.sdk)查找。
 2. 下载release目录下的gemini.sdk-1.0.jar，或者下载源码自行编译也行
 3. jar包的三元组坐标，以maven为例：
    ```maven
