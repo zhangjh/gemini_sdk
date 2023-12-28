@@ -85,6 +85,10 @@ public class HttpClientUtil {
                         }
                     }
                     log.info("response content: {}", String.join("\n", responseContent));
+                    if(cb != null) {
+                        // send a finish flag
+                        cb.apply("[done]");
+                    }
                 }
             }
         } catch (Exception e) {
