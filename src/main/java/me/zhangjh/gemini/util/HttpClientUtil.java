@@ -3,6 +3,7 @@ package me.zhangjh.gemini.util;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import me.zhangjh.gemini.request.HttpRequest;
+import me.zhangjh.gemini.response.ErrorResponse;
 import okhttp3.*;
 import okio.BufferedSource;
 import org.apache.commons.lang.StringUtils;
@@ -124,7 +125,12 @@ public class HttpClientUtil {
                     sb.append(line);
                 }
             }
-        } catch (IOException e) {
+            ErrorResponse error = JSONObject.parseObject(sb.toString(), ErrorResponse.class);
+            if(error != null && error.getError() != null) {
+                log.error("error response: {}", error);
+                throw new RuntimeException(error.getError().getMessage());
+            }
+        } catch (Exception e) {
             log.error("handleResponse exception: {}, e: {}", e.getMessage(), e);
             throw new RuntimeException(e);
         }

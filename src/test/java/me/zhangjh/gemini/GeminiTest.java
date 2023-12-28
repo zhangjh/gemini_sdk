@@ -44,7 +44,7 @@ public class GeminiTest {
     public void textOnly() {
         TextRequest textRequest = new TextRequest();
         List<ChatContent> contents = new ArrayList<>();
-        ChatContent chatContent = ChatContent.buildBySingleText("你好");
+        ChatContent chatContent = ChatContent.buildBySingleText("讲个笑话");
         contents.add(chatContent);
         textRequest.setContents(contents);
         TextResponse textResponse = geminiService.generateByText(textRequest);
