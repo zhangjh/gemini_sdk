@@ -29,13 +29,13 @@ Java已经这么没有排面了吗。。Gemini的API竟然没有Java的，我来
    最新版本号可以去[中央仓库](https://central.sonatype.com/artifact/me.zhangjh/gemini.sdk)查找。
 2. 使用方式
 
-   - 问答类的接口
+   - 问答类的服务
    ```java
     @Autowired
     private GeminiService geminiService;
    ```
    
-   - 向量嵌入接口
+   - 向量嵌入服务
    ```java
     @Autowired
     private EmbeddingService embeddingService;
