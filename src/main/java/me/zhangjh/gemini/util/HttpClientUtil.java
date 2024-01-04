@@ -91,6 +91,7 @@ public class HttpClientUtil {
                     }
                 }
             }
+            res.body().close();
         } catch (Exception e) {
             log.error("sendNormally exception, {}, httpRequest: {}, e: {}",
                     e.getMessage(), JSONObject.toJSONString(httpRequest), e);
