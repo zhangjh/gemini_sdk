@@ -49,7 +49,9 @@ public class HttpClientUtil {
     public static String sendSync(HttpRequest httpRequest) {
         Request request = buildRequest(httpRequest);
         try (Response response = OK_HTTP_CLIENT.newCall(request).execute()){
-            return handleResponse(Objects.requireNonNull(response.body()));
+            try (ResponseBody body = response.body()){
+                return handleResponse(Objects.requireNonNull(body));
+            }
         } catch (IOException e) {
             log.error("sendNormally exception, {}, httpRequest: {}, e: {}",
                     e.getMessage(), JSONObject.toJSONString(httpRequest), e);
@@ -65,33 +67,34 @@ public class HttpClientUtil {
         try (Response res = OK_HTTP_CLIENT.newCall(request).execute()) {
             // handle response
             assert res.body() != null;
-            try (InputStreamReader inputStreamReader = new InputStreamReader(res.body().byteStream(),
-                    StandardCharsets.UTF_8)) {
-                try (BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
-                    String line;
-                    List<String> responseContent = new ArrayList<>();
-                    while ((line = bufferedReader.readLine()) != null) {
-                        line = line.trim();
-                        if(line.startsWith("\"text\":")) {
-                            String[] parts = line.split(":");
-                            String content = String.join("", Arrays.copyOfRange(parts, 1, parts.length));
-                            content = content.replaceAll("^\\s*\"", "")
-                                    .replaceAll("\"\\s*$", "");
-                            log.info("content: {}", content);
-                            responseContent.add(content);
-                            if(cb != null) {
-                                cb.apply(content);
+            try (ResponseBody body = res.body()) {
+                try (InputStreamReader inputStreamReader = new InputStreamReader(body.byteStream(),
+                        StandardCharsets.UTF_8)) {
+                    try (BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
+                        String line;
+                        List<String> responseContent = new ArrayList<>();
+                        while ((line = bufferedReader.readLine()) != null) {
+                            line = line.trim();
+                            if(line.startsWith("\"text\":")) {
+                                String[] parts = line.split(":");
+                                String content = String.join("", Arrays.copyOfRange(parts, 1, parts.length));
+                                content = content.replaceAll("^\\s*\"", "")
+                                        .replaceAll("\"\\s*$", "");
+                                log.info("content: {}", content);
+                                responseContent.add(content);
+                                if(cb != null) {
+                                    cb.apply(content);
+                                }
                             }
                         }
-                    }
-                    log.info("response content: {}", String.join("\n", responseContent));
-                    if(cb != null) {
-                        // send a finish flag
-                        cb.apply("[done]");
+                        log.info("response content: {}", String.join("\n", responseContent));
+                        if(cb != null) {
+                            // send a finish flag
+                            cb.apply("[done]");
+                        }
                     }
                 }
             }
-            res.body().close();
         } catch (Exception e) {
             log.error("sendNormally exception, {}, httpRequest: {}, e: {}",
                     e.getMessage(), JSONObject.toJSONString(httpRequest), e);
