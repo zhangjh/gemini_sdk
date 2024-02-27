@@ -87,7 +87,7 @@ public class HttpClientUtil {
                                 }
                             }
                         }
-                        log.info("response content: {}", String.join("\n", responseContent));
+                        log.info("response content: {}", String.join("", responseContent));
                         if(cb != null) {
                             // send a finish flag
                             cb.apply("[done]");
