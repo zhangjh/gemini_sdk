@@ -10,7 +10,10 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -34,6 +37,25 @@ public class HttpClientUtil {
         builder.writeTimeout(60, TimeUnit.SECONDS);
         builder.connectionPool(new ConnectionPool(32,
                 60,TimeUnit.SECONDS));
+        // 从application.properties读取变量
+        try (InputStream inputStream =
+                     HttpClientUtil.class.getClassLoader()
+                             .getResourceAsStream("application.properties")) {
+            if(inputStream != null) {
+                Properties properties = new Properties();
+                    properties.load(inputStream);
+                    String proxyHost = properties.getProperty("proxy_host");
+                    String proxyPort = properties.getProperty("proxy_port");
+                    if(StringUtils.isNotEmpty(proxyHost) && StringUtils.isNotEmpty(proxyPort)) {
+                        // 给okhttp配置代理
+                        builder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost,
+                                Integer.parseInt(proxyPort))));
+                    }
+            }
+        } catch (Exception e) {
+            log.error("load proxy properties exception: ", e);
+        }
+
         OK_HTTP_CLIENT = builder.build();
     }
 
