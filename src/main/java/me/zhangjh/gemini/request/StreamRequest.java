@@ -23,5 +23,5 @@ public class StreamRequest<T> extends BaseRequest {
     private List<T> contents;
 
     @JSONField(serialize = false)
-    private String urlPath = "/models/gemini-pro:streamGenerateContent";
+    private String urlPath = this.getModelName() + ":streamGenerateContent";
 }

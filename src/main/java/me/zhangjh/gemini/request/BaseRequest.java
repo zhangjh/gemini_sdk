@@ -3,6 +3,7 @@ package me.zhangjh.gemini.request;
 import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Data;
 import me.zhangjh.gemini.common.ApiVersionEnum;
+import me.zhangjh.gemini.common.ModelEnum;
 import me.zhangjh.gemini.common.SafetyCategoryEnum;
 import me.zhangjh.gemini.common.SafetyThreshHoldEnum;
 import me.zhangjh.gemini.pojo.GenerationConfig;
@@ -21,6 +22,12 @@ public class BaseRequest {
 
     @JSONField(serialize = false)
     private String version = ApiVersionEnum.V1.getCode();
+
+    @JSONField(serialize = false)
+    private String modelName = ModelEnum.GEMINI_PRO.getCode();
+
+    @JSONField(serialize = false)
+    private String visionModelName = ModelEnum.GEMINI_PRO_VISION.getCode();
 
     public BaseRequest() {
         setDefaultSafetySettings();

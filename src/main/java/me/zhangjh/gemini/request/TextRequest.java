@@ -21,5 +21,5 @@ public class TextRequest extends BaseRequest {
     private List<ChatContent> contents;
 
     @JSONField(serialize = false)
-    private String urlPath = "/models/gemini-pro:generateContent";
+    private String urlPath = this.getModelName() + ":generateContent";
 }

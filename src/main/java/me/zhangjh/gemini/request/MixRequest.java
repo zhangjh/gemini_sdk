@@ -21,5 +21,5 @@ public class MixRequest extends BaseRequest {
     private List<Content> contents;
 
     @JSONField(serialize = false)
-    private String urlPath = "/models/gemini-pro-vision:generateContent";
+    private String urlPath = this.getVisionModelName() + ":generateContent";
 }

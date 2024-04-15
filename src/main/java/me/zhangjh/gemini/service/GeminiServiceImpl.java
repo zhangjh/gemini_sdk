@@ -10,6 +10,7 @@ import me.zhangjh.gemini.request.*;
 import me.zhangjh.gemini.response.TextResponse;
 import me.zhangjh.gemini.response.VisionResponse;
 import me.zhangjh.gemini.util.HttpClientUtil;
+import me.zhangjh.gemini.util.UrlUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,8 +41,7 @@ public class GeminiServiceImpl implements GeminiService {
     public TextResponse generateByText(TextRequest request) {
         List<ChatContent> contents = request.getContents();
         Assert.isTrue(CollectionUtils.isNotEmpty(contents), "Empty contents");
-        HttpRequest httpRequest = new HttpRequest(
-                urlBase + "/" + request.getVersion() + request.getUrlPath() + "?key=" + apiKey);
+        HttpRequest httpRequest = new HttpRequest(UrlUtil.getUrl(urlBase, request.getVersion(), request.getUrlPath(), apiKey));
         String reqData = JSONObject.toJSONString(request);
         log.info("generateByText request: {}", reqData);
         httpRequest.setReqData(reqData);
@@ -62,8 +62,7 @@ public class GeminiServiceImpl implements GeminiService {
                 }
             }
         }
-        HttpRequest httpRequest = new HttpRequest(
-                urlBase + "/" + request.getVersion() + request.getUrlPath() + "?key=" + apiKey);
+        HttpRequest httpRequest = new HttpRequest(UrlUtil.getUrl(urlBase, request.getVersion(), request.getUrlPath(), apiKey));
         httpRequest.setReqData(JSONObject.toJSONString(request));
         String res = HttpClientUtil.sendSync(httpRequest);
         log.info("generateByMix: {}", res);
@@ -108,8 +107,7 @@ public class GeminiServiceImpl implements GeminiService {
     public TextResponse multiTurnChat(MultiTurnRequest request) {
         List<ChatContent> contents = request.getContents();
         Assert.isTrue(CollectionUtils.isNotEmpty(contents), "request empty");
-        HttpRequest httpRequest = new HttpRequest(urlBase + "/" + request.getVersion()
-                + request.getUrlPath() + "?key=" + apiKey);
+        HttpRequest httpRequest = new HttpRequest(UrlUtil.getUrl(urlBase, request.getVersion(), request.getUrlPath(), apiKey));
         httpRequest.setReqData(JSONObject.toJSONString(request));
         String res = HttpClientUtil.sendSync(httpRequest);
         Assert.isTrue(StringUtils.isNotEmpty(res), "empty res returned");
@@ -145,8 +143,7 @@ public class GeminiServiceImpl implements GeminiService {
     public void streamChat(StreamRequest<ChatContent> request, Function<String, Void> cb) {
         List<ChatContent> contents = request.getContents();
         Assert.isTrue(CollectionUtils.isNotEmpty(contents), "contents empty");
-        HttpRequest httpRequest = new HttpRequest(urlBase + "/" + request.getVersion()
-                + request.getUrlPath() + "?key=" + apiKey);
+        HttpRequest httpRequest = new HttpRequest(UrlUtil.getUrl(urlBase, request.getVersion(), request.getUrlPath(), apiKey));
         httpRequest.setReqData(JSONObject.toJSONString(request));
         HttpClientUtil.sendStream(httpRequest, cb);
     }
