@@ -74,3 +74,6 @@ Java已经这么没有排面了吗。。Gemini的API竟然没有Java的，我来
 4. 其他接口不多说了，有需要的可以自行查看源码。
 5. 更具体的使用方式，可以查看单测代码：
    ```src/test/java/me/zhangjh/gemini/GeminiTest.java```
+
+代理相关问题可见issue：（How to add a proxy）
+https://github.com/zhangjh/gemini_sdk/issues/3
