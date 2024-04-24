@@ -27,7 +27,12 @@ Java已经这么没有排面了吗。。Gemini的API竟然没有Java的，我来
     </dependency>
    ```
    最新版本号可以去[中央仓库](https://central.sonatype.com/artifact/me.zhangjh/gemini.sdk)查找。
-2. 使用方式
+2. 在你的项目启动类或其他扫包路径配置处，加上项目包路径，如图所示：
+   ![image](https://github.com/zhangjh/gemini_sdk/assets/3371714/0daa3b23-4299-4ff5-ae9d-6bd8fb4788cc)
+   ```
+   @ComponentScan(basePackages = {"me.zhangjh.gemini"})
+   ```
+3. 使用方式
 
    - 问答类的服务
    ```java
@@ -66,6 +71,6 @@ Java已经这么没有排面了吗。。Gemini的API竟然没有Java的，我来
    void streamChat(String question, List<ChatContent> context, Function<String, Void> cb);
    ```
    流式接口需要传入一个回调函数，回调函数接收一个字符串参数，表示gemini返回的文本。
-3. 其他接口不多说了，有需要的可以自行查看源码。
-4. 更具体的使用方式，可以查看单测代码：
+4. 其他接口不多说了，有需要的可以自行查看源码。
+5. 更具体的使用方式，可以查看单测代码：
    ```src/test/java/me/zhangjh/gemini/GeminiTest.java```
