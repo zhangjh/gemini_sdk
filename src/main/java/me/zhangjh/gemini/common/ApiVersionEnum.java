@@ -15,7 +15,7 @@ public enum ApiVersionEnum {
      * */
 
     V1("v1"),
-    V1_BETA("v1beata"),
+    V1_BETA("v1beta"),
     ;
 
     private final String code;
